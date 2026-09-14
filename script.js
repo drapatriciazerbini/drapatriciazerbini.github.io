@@ -14,9 +14,14 @@ const config=window.SITE_CONFIG||{};
 const phone=String(config.whatsapp||'').replace(/\D/g,'');
 if(/^55\d{10,11}$/.test(phone)){
  const schedule=document.querySelector('#schedule-link');
- schedule.href='https://wa.me/'+phone+'?text='+encodeURIComponent('Olá! Gostaria de saber mais sobre a consulta domiciliar da Dra. Patrícia.');
+ schedule.href='https://wa.me/'+phone+'?text='+encodeURIComponent('Olá! Gostaria de informações sobre uma consulta com a Dra. Patrícia Zerbini.');
  schedule.target='_blank';schedule.rel='noopener noreferrer';schedule.hidden=false;
- document.querySelector('#contact-pending').hidden=true;
+
+}
+const officePhone=String(config.phone||'').replace(/\D/g,'');
+if(/^55\d{10,11}$/.test(officePhone)){
+ document.querySelectorAll('#phone-link,#contact-phone').forEach(link=>{link.href='tel:+'+officePhone;});
+ if(config.phoneDisplay)document.querySelector('#contact-phone').textContent=config.phoneDisplay;
 }
 if(config.region){document.querySelector('#region-answer').textContent='Atendimento em '+config.region+'. Consulte a disponibilidade para o seu endereço antes de agendar.';const region=document.querySelector('#contact-region');region.textContent=config.region;region.hidden=false;}
 if(config.crmUf){document.querySelectorAll('.hero-signature,.doctor-register,.footer p').forEach(element=>{element.textContent=element.textContent.replace('CRM 90998','CRM-'+config.crmUf+' 90998');});}
