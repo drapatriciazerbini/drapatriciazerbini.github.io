@@ -8,7 +8,19 @@ const toggle = document.querySelector('#video-toggle');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 function updateVideoControl(){ const paused = video.paused; toggle.setAttribute('aria-label', paused ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo'); document.querySelector('#video-icon').textContent = paused ? '▷' : 'Ⅱ'; document.querySelector('#video-label').textContent = paused ? 'Reproduzir vídeo' : 'Pausar vídeo'; }
 if(reducedMotion.matches){video.autoplay=false;video.pause();}
-toggle.addEventListener('click', () => {if(video.paused)video.play().catch(updateVideoControl);else video.pause();});
+/* Pede o play explicitamente. O atributo autoplay sozinho falha em parte das
+   maquinas: Chrome com economia de energia, aba aberta em segundo plano, ou o
+   video ainda sem dados suficientes no primeiro instante. Nesses casos o site
+   ficava na imagem de capa parada e a pessoa precisava achar o botao. A
+   tentativa se repete uma vez, quando o video avisa que ja da para tocar.
+   Quem pediu menos movimento continua de fora: a condicao abaixo respeita isso,
+   e um play recusado nao gera erro, so atualiza o rotulo do botao. */
+else{
+  const tentarTocar = () => { const p = video.play(); if(p && p.catch) p.catch(updateVideoControl); };
+  tentarTocar();
+  video.addEventListener('canplay', () => { if(video.paused && !video.dataset.pausadoPelaPessoa) tentarTocar(); }, {once:true});
+}
+toggle.addEventListener('click', () => {if(video.paused){delete video.dataset.pausadoPelaPessoa;video.play().catch(updateVideoControl);}else{video.dataset.pausadoPelaPessoa='1';video.pause();}});
 video.addEventListener('play',updateVideoControl);video.addEventListener('pause',updateVideoControl);updateVideoControl();
 const config=window.SITE_CONFIG||{};
 const phone=String(config.whatsapp||'').replace(/\D/g,'');
