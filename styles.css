@@ -76,6 +76,6 @@
    Discreta de proposito: quem e do consultorio sabe onde esta, quem e paciente
    nem repara. O login e o que protege; o link so poupa a equipe de decorar o
    endereco. */
-.footer .equipe{display:inline-flex;align-items:center;gap:7px;margin-top:8px;color:var(--muted);opacity:.7;font-size:11px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,color .2s}
+.footer .equipe{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:var(--muted);opacity:.5;font-size:10px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,color .2s}
 .footer .equipe:hover,.footer .equipe:focus-visible{opacity:1;color:var(--green)}
-.footer .equipe svg{width:13px;height:13px;flex:none}
+.footer .equipe svg{width:11px;height:11px;flex:none}
