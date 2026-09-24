@@ -71,3 +71,11 @@
 .autoria{display:flex;align-items:center;gap:8px;width:fit-content;margin:9px 0 0 auto;font-size:11px;line-height:1.6;color:var(--muted)}.autoria>span{opacity:.8}.autoria a{display:inline-flex;align-items:center;opacity:.5;transition:opacity .3s}.autoria img{display:block;height:16px;width:auto}
 .autoria a:hover,.autoria a:focus-visible{opacity:.9}
 @media(max-width:760px){.footer-closing{text-align:left}.autoria{margin-left:0}}
+
+/* Entrada do sistema, para a equipe (24/09/2026, como no site do Dr. Marcello).
+   Discreta de proposito: quem e do consultorio sabe onde esta, quem e paciente
+   nem repara. O login e o que protege; o link so poupa a equipe de decorar o
+   endereco. */
+.footer .equipe{display:inline-flex;align-items:center;gap:7px;margin-top:8px;color:var(--muted);opacity:.7;font-size:11px;letter-spacing:.04em;text-decoration:none;transition:opacity .2s,color .2s}
+.footer .equipe:hover,.footer .equipe:focus-visible{opacity:1;color:var(--green)}
+.footer .equipe svg{width:13px;height:13px;flex:none}
