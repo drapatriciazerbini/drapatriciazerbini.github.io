@@ -1,14 +1,11 @@
-// Dois números, a pedido da Dra. Patrícia (24/09/2026):
-// - whatsapp: o número do agendamento automático, que responde a qualquer
-//   hora com valores, informações e pedido de consulta.
-// - phone / secretaria: a secretária do consultório, atendimento humano, por
-//   ligação ou WhatsApp.
+// Um número só no site (24/09/2026): o WhatsApp do consultório, com o
+// atendimento automático. O número da secretária não aparece aqui: quem
+// precisa de gente pede na própria conversa, e o robô oferece o contato dela.
+// O número do robô não recebe ligação, por isso o site não tem botão de ligar.
 // O RQE informado pertence à Clínica Médica; a área domiciliar permanece sob consulta.
 window.SITE_CONFIG = {
-  phone: '5513981129572',
-  phoneDisplay: '(13) 98112-9572',
+  phoneDisplay: '(13) 99668-0402',
   whatsapp: '5513996680402',
-  secretaria: '5513981129572',
   region: 'Santos e São Vicente',
   crm: '90998',
   crmUf: '',
