@@ -24,9 +24,31 @@ toggle.addEventListener('click', () => {if(video.paused){delete video.dataset.pa
 video.addEventListener('play',updateVideoControl);video.addEventListener('pause',updateVideoControl);updateVideoControl();
 const config=window.SITE_CONFIG||{};
 const phone=String(config.whatsapp||'').replace(/\D/g,'');
+// Quem chegou pelo Google (19/10/2026): anuncio (gclid, gbraid, wbraid ou
+// utm_source=google) ou busca do Google como pagina de origem. A mensagem do
+// WhatsApp leva a frase "Encontrei a Dra. Patricia Zerbini no Google", que o
+// sistema reconhece e mostra na aba Google da Visao geral. Nada e enviado a
+// lugar nenhum: so muda o texto pronto do botao.
+function veioDoGoogle(){
+ let marcado=false;
+ try{marcado=sessionStorage.getItem('veio_do_google')==='1';}catch(e){}
+ if(marcado)return true;
+ let sim=false;
+ try{
+  const p=new URLSearchParams(location.search);
+  sim=['gclid','gbraid','wbraid'].some(k=>p.has(k))||/google/i.test(p.get('utm_source')||'');
+  if(!sim&&document.referrer){const host=new URL(document.referrer).hostname;sim=/(^|\.)google\.[a-z.]+$/i.test(host);}
+ }catch(e){}
+ if(sim){try{sessionStorage.setItem('veio_do_google','1');}catch(e){}}
+ return sim;
+}
+const doGoogle=veioDoGoogle();
+const textoDoWhatsApp=doGoogle
+ ?'Olá! Encontrei a Dra. Patrícia Zerbini no Google e gostaria de informações sobre uma consulta.'
+ :'Olá! Gostaria de informações sobre uma consulta com a Dra. Patrícia Zerbini.';
 if(/^55\d{10,11}$/.test(phone)){
  const schedule=document.querySelector('#schedule-link');
- schedule.href='https://wa.me/'+phone+'?text='+encodeURIComponent('Olá! Gostaria de informações sobre uma consulta com a Dra. Patrícia Zerbini.');
+ schedule.href='https://wa.me/'+phone+'?text='+encodeURIComponent(textoDoWhatsApp);
  schedule.target='_blank';schedule.rel='noopener noreferrer';schedule.hidden=false;
 
 }
@@ -34,7 +56,7 @@ if(/^55\d{10,11}$/.test(phone)){
 // nao recebe ligacao, entao um link tel: levaria a uma chamada sem resposta.
 if(/^55\d{10,11}$/.test(phone)){
  const destaque=document.querySelector('#contact-phone');
- if(destaque){destaque.href='https://wa.me/'+phone;destaque.target='_blank';destaque.rel='noopener noreferrer';if(config.phoneDisplay)destaque.textContent=config.phoneDisplay;}
+ if(destaque){destaque.href='https://wa.me/'+phone+(doGoogle?'?text='+encodeURIComponent(textoDoWhatsApp):'');destaque.target='_blank';destaque.rel='noopener noreferrer';if(config.phoneDisplay)destaque.textContent=config.phoneDisplay;}
 }
 if(config.region){document.querySelector('#region-answer').textContent='Atendimento em '+config.region+'. Em outras cidades a visita também é possível, com acréscimo no valor. Consulte a disponibilidade para o seu endereço antes de agendar.';const region=document.querySelector('#contact-region');region.textContent=config.region;region.hidden=false;}
 if(config.crmUf){document.querySelectorAll('.hero-signature,.doctor-register,.footer p').forEach(element=>{element.textContent=element.textContent.replace('CRM 90998','CRM-'+config.crmUf+' 90998');});}
